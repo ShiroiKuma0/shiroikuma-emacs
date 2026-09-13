@@ -1,0 +1,56 @@
+<!-- Theme of the 白い熊 GNU Emacs UI page (the shiroikuma-emacs fork).
+
+This file is part of the shiroikuma-emacs fork of GNU Emacs
+(https://github.com/ShiroiKuma0/shiroikuma-emacs).  Upstream's
+style.xml files stay untouched; this theme is applied only to
+org.gnu.emacs.shiroikuma.ShiroikumaUiActivity from the manifest.
+
+GNU Emacs is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+GNU Emacs is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<resources>
+  <!-- The house look: black ground, yellow ink, black system bars.
+       Theme.DeviceDefault (not .DayNight) is the dark Material theme
+       on every supported API level (minSdk 29).  -->
+  <style name="ShiroikumaStyle"
+	 parent="@android:style/Theme.DeviceDefault.NoActionBar">
+    <item name="android:windowBackground">@android:color/black</item>
+    <item name="android:colorBackground">@android:color/black</item>
+    <item name="android:statusBarColor">@android:color/black</item>
+    <item name="android:navigationBarColor">@android:color/black</item>
+    <item name="android:windowLightStatusBar">false</item>
+    <item name="android:windowLightNavigationBar">false</item>
+    <item name="android:colorAccent">#FFFFFF00</item>
+    <item name="android:colorPrimary">@android:color/black</item>
+    <item name="android:colorPrimaryDark">@android:color/black</item>
+    <item name="android:textColorPrimary">#FFFFFF00</item>
+    <item name="android:textColorSecondary">#FFC8C800</item>
+    <item name="android:textColorTertiary">#FFC8C800</item>
+    <item name="android:alertDialogTheme">@style/ShiroikumaDialog</item>
+    <item name="android:windowSwipeToDismiss">false</item>
+  </style>
+
+  <!-- Platform AlertDialogs raised from the page (confirmations, the
+       backup list): black panel with a 2 dp yellow border, yellow text
+       everywhere, yellow buttons.  -->
+  <style name="ShiroikumaDialog"
+	 parent="@android:style/Theme.DeviceDefault.Dialog.Alert">
+    <item name="android:windowBackground">@drawable/shiroikuma_dialog_bg</item>
+    <item name="android:colorBackground">@android:color/black</item>
+    <item name="android:colorAccent">#FFFFFF00</item>
+    <item name="android:textColorPrimary">#FFFFFF00</item>
+    <item name="android:textColorSecondary">#FFC8C800</item>
+    <item name="android:textColorAlertDialogListItem">#FFFFFF00</item>
+    <item name="android:textColor">#FFFFFF00</item>
+  </style>
+</resources>

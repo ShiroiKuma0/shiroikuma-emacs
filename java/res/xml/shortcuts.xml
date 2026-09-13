@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Static launcher shortcut of the shiroikuma-emacs fork: a long-press
+     on the 白い熊 GNU Emacs icon offers the 白い熊 GNU Emacs UI page.
+     Referenced from the android.app.shortcuts meta-data of
+     org.gnu.emacs.EmacsActivity in AndroidManifest.xml.in.
+
+     targetPackage is the INSTALLED id (FORK_APPLICATION_ID in
+     java/Makefile.in): aapt's rename-manifest-package rewrites the
+     manifest only, never resource XML.  -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+  <shortcut
+      android:shortcutId="shiroikuma_ui"
+      android:enabled="true"
+      android:icon="@mipmap/shiroikuma_ui_icon"
+      android:shortcutShortLabel="@string/shiroikuma_ui_title"
+      android:shortcutLongLabel="@string/shiroikuma_ui_title">
+    <intent
+	android:action="android.intent.action.MAIN"
+	android:targetPackage="shiroikuma.emacs"
+	android:targetClass="org.gnu.emacs.shiroikuma.ShiroikumaUiActivity"/>
+  </shortcut>
+</shortcuts>

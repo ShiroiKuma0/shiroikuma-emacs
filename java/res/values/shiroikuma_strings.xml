@@ -40,4 +40,98 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
   <!-- Name of the notification channel EmacsService keeps its
        foreground notification in.  -->
   <string name="shiroikuma_notification_channel">白い熊 GNU Emacs background service</string>
+  <!-- ================================================================
+       白い熊 GNU Emacs UI page (org.gnu.emacs.shiroikuma.ShiroikumaUiActivity)
+       ================================================================ -->
+
+  <!-- Section headings.  -->
+  <string name="shiroikuma_section_eim">Export / Import</string>
+  <string name="shiroikuma_section_options">Emacs options</string>
+  <string name="shiroikuma_section_look">Appearance</string>
+  <string name="shiroikuma_section_reset">Reset</string>
+
+  <!-- Export / Import rows and panel.  -->
+  <string name="shiroikuma_eim_entry">Export / Import…</string>
+  <string name="shiroikuma_eim_entry_desc">Back up this app\u2019s settings and the whole Emacs home directory to one .zip, and restore it.</string>
+  <string name="shiroikuma_eim_title">Export / Import</string>
+  <string name="shiroikuma_eim_desc">Tick what to carry, then export it as a single .zip — or import one and restore just those parts.</string>
+  <string name="shiroikuma_eim_dir">Export directory</string>
+  <string name="shiroikuma_eim_dir_unset">Not set — tap to choose a folder</string>
+  <string name="shiroikuma_eim_dir_regrant">Access lost with the install — tap to choose it again</string>
+  <string name="shiroikuma_eim_last_title">Last export</string>
+  <string name="shiroikuma_eim_warn_nodir">No export directory set.</string>
+  <string name="shiroikuma_eim_warn_regrant">The export directory has to be chosen again.</string>
+  <string name="shiroikuma_eim_warn_none">No backup in this directory yet.</string>
+  <string name="shiroikuma_eim_last">Last backup: %1$s</string>
+  <string name="shiroikuma_eim_last_size">%1$s · %2$s</string>
+  <string name="shiroikuma_eim_querying">Looking…</string>
+  <string name="shiroikuma_eim_select_all">Select all</string>
+  <string name="shiroikuma_eim_export">Export</string>
+  <string name="shiroikuma_eim_import">Import</string>
+  <string name="shiroikuma_eim_exporting">Exporting…</string>
+  <string name="shiroikuma_eim_importing">Importing…</string>
+  <string name="shiroikuma_eim_progress">%1$s files %2$d/%3$d · %4$s</string>
+  <string name="shiroikuma_eim_none_selected">No categories selected.</string>
+  <string name="shiroikuma_eim_pick_backup">Choose a backup</string>
+  <string name="shiroikuma_eim_browse">Browse…</string>
+  <string name="shiroikuma_eim_export_done_title">Export finished</string>
+  <string name="shiroikuma_eim_export_done_body">Written to:\n%1$s\n\n%2$s · %3$d categories</string>
+  <string name="shiroikuma_eim_export_fail_title">Export failed</string>
+  <string name="shiroikuma_eim_export_fail">Export failed: %1$s</string>
+  <string name="shiroikuma_eim_import_done_title">Import finished</string>
+  <string name="shiroikuma_eim_import_fail_title">Import failed</string>
+  <string name="shiroikuma_eim_import_fail">Import failed: %1$s</string>
+  <string name="shiroikuma_eim_import_none">Not a 白い熊 GNU Emacs backup.</string>
+  <string name="shiroikuma_eim_import_nothing">Nothing to restore.</string>
+  <string name="shiroikuma_eim_import_hint">Emacs reads the restored files the next time it starts.</string>
+  <string name="shiroikuma_eim_close">Close</string>
+  <string name="shiroikuma_eim_start_emacs">Start Emacs</string>
+  <string name="shiroikuma_eim_running_title">Emacs is running</string>
+  <string name="shiroikuma_eim_running_body">The home directory cannot be restored under a running Emacs. Emacs will be shut down now — unsaved buffers are lost — and the restore continues in this page.</string>
+  <string name="shiroikuma_eim_running_go">Shut down and restore</string>
+  <string name="shiroikuma_eim_restoring_title">Restoring…</string>
+  <string name="shiroikuma_eim_restoring_body">Restoring the backup. Do not start Emacs until this finishes.</string>
+  <string name="shiroikuma_eim_cat_settings">Settings</string>
+  <string name="shiroikuma_eim_cat_data_home">Home directory (~/.emacs.d, init files, packages)</string>
+  <string name="shiroikuma_eim_summary_files">%1$s: %2$d files, %3$s</string>
+  <string name="shiroikuma_eim_summary_skipped">%1$d sockets/devices skipped</string>
+
+  <!-- Automation rows (sister-app backup contract v2).  -->
+  <string name="shiroikuma_auto_switch">Automation export</string>
+  <string name="shiroikuma_auto_switch_desc">Let sister apps (白い熊 応用管理, 白い熊 自由作業盤) run this export headlessly and back its data up. On by default.</string>
+  <string name="shiroikuma_auto_require_token">Use authorization token?</string>
+  <string name="shiroikuma_auto_require_token_desc">Off: any sister app may drive the automation. On: a caller must also present the token below. Either way the data door checks the caller\u2019s package name and signature.</string>
+  <string name="shiroikuma_auto_token">Automation token</string>
+  <string name="shiroikuma_auto_regenerate">Regenerate</string>
+  <string name="shiroikuma_auto_token_copied">Token copied to the clipboard.</string>
+  <string name="shiroikuma_auto_token_regen_title">Regenerate the token?</string>
+  <string name="shiroikuma_auto_token_regen_msg">The old token stops working at once. Every copy already pasted into 白い熊 自由作業盤 must be updated.</string>
+  <string name="shiroikuma_auto_token_regenerated">New token generated — update the pasted copies.</string>
+
+  <!-- BackupService (the foreground service behind both automation
+       doors): its notification channel and the notification titles.  -->
+  <string name="shiroikuma_backup_channel">白い熊 GNU Emacs backup</string>
+  <string name="shiroikuma_auto_notif_export">Backing up for a sister app…</string>
+  <string name="shiroikuma_auto_notif_import">Restoring from a sister app…</string>
+  <string name="shiroikuma_auto_notif_spooling">Receiving the archive…</string>
+
+  <!-- Emacs options: the three stock rows reuse upstream's
+       start_quick_*, start_debug_init_* and erase_dump_* strings.  -->
+  <string name="shiroikuma_opt_dump_removed">Dump file removed.</string>
+  <string name="shiroikuma_opt_dump_missing">There is no dump file to remove.</string>
+
+  <!-- Appearance.  -->
+  <string name="shiroikuma_look_black_bars">Black system bars</string>
+  <string name="shiroikuma_look_black_bars_desc">Paint the status and navigation bars black behind Emacs.</string>
+  <string name="shiroikuma_look_keep_screen_on">Keep screen on while Emacs is in front</string>
+  <string name="shiroikuma_look_keep_screen_on_desc">Off: the screen times out as usual.</string>
+  <string name="shiroikuma_look_caption">Fonts, colours, the cursor and the keyboard are Emacs\u2019s own — set them in Lisp (init.el, custom-set-faces).</string>
+
+  <!-- Reset.  -->
+  <string name="shiroikuma_reset_row">Reset this page</string>
+  <string name="shiroikuma_reset_row_desc">Forget the appearance switches and the export directory. Automation settings and the home directory are left alone.</string>
+  <string name="shiroikuma_reset_confirm_title">Reset the UI page?</string>
+  <string name="shiroikuma_reset_confirm_msg">The appearance switches return to their defaults and the export directory is forgotten. The automation switch, the token and ~/ are not touched.</string>
+  <string name="shiroikuma_reset_done">Reset.</string>
+  <string name="shiroikuma_reset_go">Reset</string>
 </resources>

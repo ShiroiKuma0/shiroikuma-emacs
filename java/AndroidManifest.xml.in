@@ -213,6 +213,16 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
   <uses-sdk android:minSdkVersion="@ANDROID_MIN_SDK@"
 	    android:targetSdkVersion="37"/>
 
+  <!-- shiroikuma fork: the two callers of the sister-app automation
+       contract must be visible for setPackage on the reply broadcasts
+       to resolve (Android 11+).  QUERY_ALL_PACKAGES above covers them
+       already; this declares it so it rests on nothing.  -->
+
+  <queries>
+    <package android:name="shiroikuma.oyokanri" />
+    <package android:name="shiroikuma.jiyusagyoban" />
+  </queries>
+
   <application android:name="org.gnu.emacs.EmacsApplication"
 	       android:label="@string/shiroikuma_app_name"
 	       android:icon="@mipmap/shiroikuma_icon"
@@ -234,6 +244,11 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+
+      <!-- shiroikuma fork: a long-press on the launcher icon offers the
+           shiroikuma_ui_title page (res/xml/shortcuts.xml).  -->
+      <meta-data android:name="android.app.shortcuts"
+		 android:resource="@xml/shortcuts"/>
     </activity>
 
     <activity android:name="org.gnu.emacs.EmacsOpenActivity"
@@ -288,10 +303,17 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
 	      android:maxRecents="50"
 	      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|locale|fontScale"/>
 
+    <!-- shiroikuma fork: the ``application preferences'' activity is the
+         fork's UI page (org.gnu.emacs.shiroikuma.ShiroikumaUiActivity)
+         rather than upstream's EmacsPreferencesActivity, which stays
+         compiled but unreferenced.  -->
+
     <activity android:autoRemoveFromRecents="true"
               android:label="@string/shiroikuma_ui_title"
 	      android:exported="true"
-              android:name=".EmacsPreferencesActivity">
+	      android:theme="@style/ShiroikumaStyle"
+	      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+              android:name="org.gnu.emacs.shiroikuma.ShiroikumaUiActivity">
       <intent-filter>
         <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
         <category android:name="android.intent.category.DEFAULT" />
@@ -311,6 +333,8 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
 	      android:enabled="true"
 	      android:exported="true"
 	      android:icon="@mipmap/shiroikuma_ui_icon"
+	      android:theme="@style/ShiroikumaStyle"
+	      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
               android:name=".EmacsLauncherPreferencesActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -338,6 +362,42 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
 	    android:name="android.content.action.DOCUMENTS_PROVIDER"/>
       </intent-filter>
     </provider>
+
+    <!-- shiroikuma fork: the sister-app backup automation contract v2
+         (org.gnu.emacs.shiroikuma).  The receiver is the unauthenticated
+         §1 door (no android:permission, by design: it only writes where
+         it is told and reports what it did); the provider is the §2a data
+         door, which verifies its caller's package, uid and signing
+         certificate; the service runs both.  The action strings and the
+         authority are the INSTALLED id (shiroikuma.emacs): aapt's
+         rename-manifest-package does not rewrite them.  -->
+
+    <receiver android:name="org.gnu.emacs.shiroikuma.StateExportReceiver"
+	      android:exported="true">
+      <intent-filter>
+        <action android:name="shiroikuma.emacs.action.EXPORT_STATE" />
+        <action android:name="shiroikuma.emacs.action.LIST_CATEGORIES" />
+        <action android:name="shiroikuma.emacs.action.CANCEL_EXPORT" />
+      </intent-filter>
+    </receiver>
+
+    <provider android:name="org.gnu.emacs.shiroikuma.AutomationProvider"
+	      android:authorities="shiroikuma.emacs.automation"
+	      android:exported="true" />
+
+    <service android:name="org.gnu.emacs.shiroikuma.BackupService"
+	     android:exported="false"
+	     android:foregroundServiceType="dataSync" />
+
+    <!-- Capability discovery, readable by 応用管理 without waking or
+         thawing this app.  Integers (aapt stores a bare number typed).  -->
+
+    <meta-data android:name="shiroikuma.automation.contract"
+	       android:value="2" />
+    <meta-data android:name="shiroikuma.automation.format"
+	       android:value="1" />
+    <meta-data android:name="shiroikuma.automation.min_format"
+	       android:value="1" />
 
     <receiver android:name=".EmacsDesktopNotification$CancellationReceiver"
 	      android:exported="false">

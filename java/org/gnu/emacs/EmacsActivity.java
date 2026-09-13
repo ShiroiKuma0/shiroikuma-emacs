@@ -338,6 +338,9 @@ public class EmacsActivity extends Activity
     /* Set it as the content view.  */
     setContentView (layout);
 
+    /* shiroikuma fork: honor the Appearance switches of the UI page.  */
+    org.gnu.emacs.shiroikuma.ShiroikumaPrefs.applyWindowPrefs (this);
+
     /* Android 15 also realigns activity contents to originate beneath
        system windows, e.g. the navigation bar, so request the original
        behavior.  */

@@ -25,7 +25,7 @@ package org.gnu.emacs;
    disabled per the API level of the host.  */
 
 public final class EmacsLauncherPreferencesActivity
-  extends EmacsPreferencesActivity
+  extends org.gnu.emacs.shiroikuma.ShiroikumaUiActivity
 {
 
 }
