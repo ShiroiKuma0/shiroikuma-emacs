@@ -81,13 +81,57 @@ endif
 BUILD_DETAILS = @BUILD_DETAILS@
 GEN_BUILD_DETAILS := $(if $(BUILD_DETAILS),true ||,)
 
-SIGN_EMACS = -keystore $(srcdir)/emacs.keystore -storepass	\
-	emacs1 $(JARSIGNER_FLAGS)
-SIGN_EMACS_V2 = sign --v2-signing-enabled --ks			\
-	$(srcdir)/emacs.keystore -debuggable-apk-permitted	\
-	--ks-pass pass:emacs1
+# --- shiroikuma fork ---------------------------------------------------
+# Install identity, version and signing of the shiroikuma-emacs fork.
+# build-fork.sh at the top of the tree sets these; each one defaults to
+# upstream's behaviour when left unset (see CLAUDE.md).
+#
+#   FORK_APPLICATION_ID  installed package name.  The Java namespace stays
+#                        org.gnu.emacs: aapt only rewrites the manifest.
+#   FORK_VERSION_NAME    replaces android:versionName ("@version@" if empty).
+#   FORK_VERSION_CODE    replaces android:versionCode (30 if empty).
+#   FORK_KEYSTORE        signing keystore (upstream's emacs.keystore if empty).
+#   FORK_KEYSTORE_ALIAS  key alias in that keystore.
+#   FORK_KEYSTORE_PASS   store and key passwords, read from the ENVIRONMENT
+#   FORK_KEY_PASS        only; upstream's public "emacs1" when unset.
+FORK_APPLICATION_ID ?= shiroikuma.emacs
+FORK_VERSION_NAME ?=
+FORK_VERSION_CODE ?=
+FORK_KEYSTORE ?= $(srcdir)/emacs.keystore
+FORK_KEYSTORE_ALIAS ?= Emacs keystore
 
-JAVA_FILES := $(wildcard $(srcdir)/org/gnu/emacs/*.java)
+# Passed to the two packaging invocations of aapt only, never to the one
+# generating R.java, so that stays org.gnu.emacs.R.
+FORK_AAPT_ARGS = $(if $(filter-out org.gnu.emacs,$(FORK_APPLICATION_ID)),\
+		   --rename-manifest-package $(FORK_APPLICATION_ID))	\
+		 $(if $(FORK_VERSION_NAME),				\
+		   --version-name "$(FORK_VERSION_NAME)")		\
+		 $(if $(FORK_VERSION_CODE),				\
+		   --version-code $(FORK_VERSION_CODE))			\
+		 $(if $(FORK_VERSION_NAME)$(FORK_VERSION_CODE),		\
+		   --replace-version)
+
+ifneq (,$(FORK_KEYSTORE_PASS))
+FORK_KEY_PASS ?= $(FORK_KEYSTORE_PASS)
+export FORK_KEYSTORE_PASS FORK_KEY_PASS
+FORK_JARSIGNER_PASS = -storepass:env FORK_KEYSTORE_PASS			\
+		      -keypass:env FORK_KEY_PASS
+FORK_APKSIGNER_PASS = --ks-pass env:FORK_KEYSTORE_PASS			\
+		      --key-pass env:FORK_KEY_PASS
+else
+FORK_JARSIGNER_PASS = -storepass emacs1
+FORK_APKSIGNER_PASS = --ks-pass pass:emacs1
+endif
+
+SIGN_EMACS = -keystore "$(FORK_KEYSTORE)" $(FORK_JARSIGNER_PASS)	\
+	$(JARSIGNER_FLAGS)
+SIGN_EMACS_V2 = sign --v2-signing-enabled --ks "$(FORK_KEYSTORE)"	\
+	--ks-key-alias "$(FORK_KEYSTORE_ALIAS)" -debuggable-apk-permitted \
+	$(FORK_APKSIGNER_PASS)
+# --- end shiroikuma fork -----------------------------------------------
+
+JAVA_FILES := $(wildcard $(srcdir)/org/gnu/emacs/*.java)		\
+	      $(wildcard $(srcdir)/org/gnu/emacs/shiroikuma/*.java)
 RESOURCE_FILES := $(foreach file,$(wildcard $(srcdir)/res/*),	\
 		    $(wildcard $(file)/*))
 
@@ -333,14 +377,15 @@ emacs.apk-in: install_temp AndroidManifest.xml classes.dex
 	if [ -z "$(ANDROID_SDK_8_OR_EARLIER)" ]; then		\
 	  $(AAPT) p -I "$(ANDROID_JAR)" -F $@			\
 	    -f -M AndroidManifest.xml $(AAPT_ASSET_ARGS)	\
-	    -A install_temp/assets			   	\
+	    $(FORK_AAPT_ARGS) -A install_temp/assets	   	\
 	    -S $(top_srcdir)/java/res -J install_temp;		\
 	  cd install_temp;					\
 	    $(AAPT) add ../$@ `find lib -type f`;		\
 	else							\
 	  echo "Packaging files not eligible for compression...">&2;\
 	  $(AAPT) p -I "$(ANDROID_JAR)" -F $@			\
-	    -f -M AndroidManifest.xml -A install_temp/assets_raw\
+	    -f -M AndroidManifest.xml $(FORK_AAPT_ARGS)		\
+	    -A install_temp/assets_raw				\
 	    -S $(top_srcdir)/java/res -J install_temp -0 "";	\
 	  echo "Packaging files eligible for compression...">&2;\
 	  cd install_temp; find assets -type f 			\
@@ -421,6 +466,7 @@ public class EmacsConfig\
 /* This is a generated file.  Do not edit!  */\
 public static final String[] EMACS_SHARED_LIBRARIES\
 = {$(ALL_DEPENDENCIES)};\
+public static final String APPLICATION_ID = "$(FORK_APPLICATION_ID)";\
 }' | sed 's/\\//g' > globals.tmp
 	$(AM_V_at) mkdir -p org/gnu/emacs
 	$(AM_V_at) $(top_srcdir)/build-aux/move-if-change \
@@ -478,10 +524,11 @@ classes.dex: $(CLASS_FILES) $(if $(IS_D8_R8), $(srcdir)/proguard.conf)
 
 .PHONY: clean maintainer-clean
 
-$(APK_NAME): emacs.apk-in $(srcdir)/emacs.keystore
+$(APK_NAME): emacs.apk-in $(FORK_KEYSTORE)
 	$(AM_V_GEN)
 	$(AM_V_SILENT) cp -f emacs.apk-in $@.unaligned
-	$(AM_V_SILENT) $(JARSIGNER) $(SIGN_EMACS) $@.unaligned "Emacs keystore"
+	$(AM_V_SILENT) $(JARSIGNER) $(SIGN_EMACS) $@.unaligned	\
+	  "$(FORK_KEYSTORE_ALIAS)"
 	$(AM_V_SILENT) $(ZIPALIGN) -f 4 $@.unaligned $@
 # Signing must happen after alignment!
 	$(AM_V_SILENT) $(APKSIGNER) $(SIGN_EMACS_V2) $@

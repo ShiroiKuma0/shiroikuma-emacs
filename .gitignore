@@ -391,3 +391,21 @@ exec/config.h.in
 exec/config-mips.m4
 exec/configure
 exec/*.s.s
+
+### shiroikuma-emacs fork ###
+# Agent config is committed (CLAUDE.md, .claude/skills/).  Upstream's leading `.*`
+# rule above hides the whole directory, so un-ignore it; only the machine-local
+# settings stay out.
+!/.claude/
+/.claude/settings.local.json
+# Release signing: the credentials and the key itself never enter git.
+# (Root-anchored: upstream's tracked java/emacs.keystore must stay tracked.)
+/keystore.properties
+/*.jks
+# Third-party Android dependencies fetched by admin/download-android-deps.sh.
+/emacs_deps/
+# Agent working files: generator scripts, intermediate data, throwaway exports.
+/.scratch/
+/fork.properties.bak
+# Classes javac writes beside our own sources (upstream ignores only its own dir).
+java/org/gnu/emacs/shiroikuma/*.class
