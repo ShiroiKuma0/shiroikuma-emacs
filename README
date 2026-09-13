@@ -1,3 +1,19 @@
+白い熊 GNU Emacs -- the shiroikuma-emacs fork
+=============================================
+
+This tree is 白い熊's fork of GNU Emacs (https://github.com/emacs-mirror/emacs,
+the mirror of Savannah's master branch), built for Android and installed as
+the package "shiroikuma.emacs" -- 白い熊 GNU Emacs -- side by side with the
+stock "org.gnu.emacs", on Termux's shared user ID (com.termux) so that every
+tool in the Termux prefix is reachable from Emacs.  What changes: the app
+name, icon and links, the install identity and the signed build pipeline
+(build-fork.sh, the fork block of java/Makefile.in), and a 白い熊 GNU Emacs UI
+settings page; the Emacs sources, the org.gnu.emacs Java namespace and all
+upstream notices are left as upstream has them.  Fork home and releases:
+https://github.com/ShiroiKuma0/shiroikuma-emacs and
+https://github.com/ShiroiKuma0/shiroikuma-emacs/releases.  Upstream's own
+README follows.
+
 Copyright (C) 2001-2026 Free Software Foundation, Inc.
 See the end of the file for license conditions.
 

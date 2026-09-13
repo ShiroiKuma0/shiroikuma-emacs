@@ -100,6 +100,7 @@ public final class EmacsDocumentsProvider extends DocumentsProvider
   {
     MatrixCursor result;
     MatrixCursor.RowBuilder row;
+    Context context;
 
     /* If the requestor asked for nothing at all, then it wants some
        data by default.  */
@@ -109,19 +110,22 @@ public final class EmacsDocumentsProvider extends DocumentsProvider
 
     result = new MatrixCursor (projection);
     row = result.newRow ();
+    context = getContext ();
 
     /* Now create and add a row for each file in the base
        directory.  */
     row.add (Root.COLUMN_ROOT_ID, baseDir.getAbsolutePath ());
-    row.add (Root.COLUMN_SUMMARY, "Emacs home directory");
+    row.add (Root.COLUMN_SUMMARY,
+	     context.getString (R.string.shiroikuma_documents_summary));
 
     /* Add the appropriate flags.  */
 
     row.add (Root.COLUMN_FLAGS, (Root.FLAG_SUPPORTS_CREATE
 				 | Root.FLAG_SUPPORTS_IS_CHILD));
-    row.add (Root.COLUMN_ICON, R.drawable.emacs);
+    row.add (Root.COLUMN_ICON, R.drawable.shiroikuma);
     row.add (Root.FLAG_LOCAL_ONLY);
-    row.add (Root.COLUMN_TITLE, "Emacs");
+    row.add (Root.COLUMN_TITLE,
+	     context.getString (R.string.shiroikuma_documents_title));
     row.add (Root.COLUMN_DOCUMENT_ID, baseDir.getAbsolutePath ());
 
     return result;
@@ -133,7 +137,7 @@ public final class EmacsDocumentsProvider extends DocumentsProvider
     Uri updatedUri;
 
     updatedUri
-      = buildChildDocumentsUri ("org.gnu.emacs",
+      = buildChildDocumentsUri (getContext ().getPackageName (),
 				file.getAbsolutePath ());
 
     return updatedUri;
@@ -150,7 +154,7 @@ public final class EmacsDocumentsProvider extends DocumentsProvider
 
     context = getContext ();
     updatedUri
-      = buildChildDocumentsUri ("org.gnu.emacs",
+      = buildChildDocumentsUri (context.getPackageName (),
 				file.getAbsolutePath ());
     context.getContentResolver ().notifyChange (updatedUri, null);
   }
@@ -167,7 +171,7 @@ public final class EmacsDocumentsProvider extends DocumentsProvider
 
     context = getContext ();
     updatedUri
-      = buildChildDocumentsUri ("org.gnu.emacs", file);
+      = buildChildDocumentsUri (context.getPackageName (), file);
     context.getContentResolver ().notifyChange (updatedUri, null);
   }
 

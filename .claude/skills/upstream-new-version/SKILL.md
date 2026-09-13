@@ -146,9 +146,13 @@ moved past our `master`; how *often* we sync is 白い熊's call (a full rebuild
    grep -n '"org\.gnu\.emacs\|getShortClassName\|getIdentifier' java/org/gnu/emacs/*.java
    git diff master..custom --stat
    ```
-   Before Phase 3 the grep lists upstream's literals (informational); after it, every hit must be
-   either `EmacsConfig.APPLICATION_ID` or a documented exception — a **new** hit means upstream
-   added a hard-coded package name that needs porting. `git diff --stat` must show only our files
+   The grep must list exactly three hits, all names rather than the package:
+   `EmacsActivity.java` (`org.gnu.emacs.STARTUP_ARGUMENTS`, an intent extra),
+   `EmacsDesktopNotification.java` (`org.gnu.emacs.DISMISSED`, the receiver's intent action) and
+   `EmacsNoninteractive.java` (`org.gnu.emacs.EmacsNoninteractive`, a class loaded by reflection).
+   Any **new** hit means upstream added a hard-coded package name that needs porting to
+   `getPackageName ()` / `EmacsConfig.APPLICATION_ID` (see the "Installed-id patch list" row in
+   `CLAUDE.md`). `git diff --stat` must show only our files
    (`java/Makefile.in`, `.gitignore`, `CLAUDE.md`, `.claude/skills/`, `build-fork.sh`,
    `fork.properties`, `keystore.properties_sample`, plus the Phase 2–4 additions).
 

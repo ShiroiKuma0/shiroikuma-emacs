@@ -440,7 +440,7 @@ public final class EmacsWindowManager
       }
 
     appTasks = activityManager.getAppTasks ();
-    target   = ".EmacsMultitaskActivity";
+    target   = EmacsMultitaskActivity.class.getName ();
 
     for (AppTask task : appTasks)
       {
@@ -450,7 +450,7 @@ public final class EmacsWindowManager
 	   EmacsMultitaskActivity.  */
 	if (info.baseIntent != null
 	    && (name = info.baseIntent.getComponent ()) != null
-	    && name.getShortClassName ().equals (target))
+	    && name.getClassName ().equals (target))
 	  /* Delete the task.  */
 	  task.finishAndRemoveTask ();
       }

@@ -247,7 +247,7 @@ public final class EmacsDesktopNotification
 	   java/res/layout/sdk8_notifications_view.xml.  */
 	notification.contentView
 	  = contentView
-	  = new RemoteViews ("org.gnu.emacs",
+	  = new RemoteViews (context.getPackageName (),
 			     R.layout.sdk8_notifications_view);
 	contentView.setTextViewText (R.id.sdk8_notifications_title,
 				     title);
@@ -280,7 +280,7 @@ public final class EmacsDesktopNotification
 
     intent = new Intent (context, CancellationReceiver.class);
     intent.setAction (NOTIFICATION_DISMISSED);
-    intent.setPackage ("org.gnu.emacs");
+    intent.setPackage (context.getPackageName ());
     intent.setData (new Uri.Builder ()
 		    .scheme ("action")
 		    .appendPath (tag)

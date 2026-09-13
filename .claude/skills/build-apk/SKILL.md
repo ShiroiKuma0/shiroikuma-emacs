@@ -82,9 +82,12 @@ installed id, version and signing. `./build-fork.sh` sets all of it — never ca
 ## On-phone notes (tell 白い熊 in the handover when relevant)
 
 - The fork is a **new app** beside the stock `org.gnu.emacs` (same shared UID `com.termux`, same
-  key). Until the Phase 3 patch list lands (DocumentsProvider authority + the `"org.gnu.emacs"`
-  Java literals), the package **cannot install** next to the stock one
-  (`INSTALL_FAILED_CONFLICTING_PROVIDER`).
+  key) and **installs beside it**: the DocumentsProvider authority is `shiroikuma.emacs` and every
+  runtime use of the package name follows the installed id (the "Installed-id patch list" row of
+  `CLAUDE.md`). If a future rebase ever brings `INSTALL_FAILED_CONFLICTING_PROVIDER` back, a new
+  hard-coded `"org.gnu.emacs"` slipped in — run the rebase grep guard.
+- Two launcher entries: **白い熊 GNU Emacs** (Emacs itself) and **白い熊 GNU Emacs UI** (the options
+  activity, enabled on every Android version).
 - `HOME` is `/data/data/shiroikuma.emacs/files`; migrate once from Termux with
   `cp -a /data/data/org.gnu.emacs/files/. /data/data/shiroikuma.emacs/files/`.
 

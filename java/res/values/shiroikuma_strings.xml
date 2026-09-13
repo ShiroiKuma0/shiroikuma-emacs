@@ -1,0 +1,43 @@
+<!-- String resources of the shiroikuma-emacs fork (白い熊 GNU Emacs).
+
+This file is part of the shiroikuma-emacs fork of GNU Emacs
+(https://github.com/ShiroiKuma0/shiroikuma-emacs).  Upstream's
+strings.xml stays untouched; everything user-visible that names the
+application lives here, so that the label of the installed package
+(shiroikuma.emacs, beside the stock org.gnu.emacs) is one resource.
+
+GNU Emacs is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+GNU Emacs is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<resources>
+  <!-- android:label of the application and of EmacsActivity (the
+       launcher entry).  -->
+  <string name="shiroikuma_app_name">白い熊 GNU Emacs</string>
+
+  <!-- android:label of EmacsPreferencesActivity (Settings > App info
+       > "App settings") and of EmacsLauncherPreferencesActivity, the
+       second launcher entry.  -->
+  <string name="shiroikuma_ui_title">白い熊 GNU Emacs UI</string>
+
+  <!-- android:label of EmacsService.  -->
+  <string name="shiroikuma_service_name">白い熊 GNU Emacs service</string>
+
+  <!-- Root title and summary EmacsDocumentsProvider shows in the
+       system file picker's sidebar.  -->
+  <string name="shiroikuma_documents_title">白い熊 GNU Emacs</string>
+  <string name="shiroikuma_documents_summary">白い熊 GNU Emacs home directory</string>
+
+  <!-- Name of the notification channel EmacsService keeps its
+       foreground notification in.  -->
+  <string name="shiroikuma_notification_channel">白い熊 GNU Emacs background service</string>
+</resources>

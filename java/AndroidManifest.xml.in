@@ -214,8 +214,8 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
 	    android:targetSdkVersion="37"/>
 
   <application android:name="org.gnu.emacs.EmacsApplication"
-	       android:label="Emacs"
-	       android:icon="@mipmap/emacs_icon"
+	       android:label="@string/shiroikuma_app_name"
+	       android:icon="@mipmap/shiroikuma_icon"
 	       android:hardwareAccelerated="true"
 	       android:supportsRtl="true"
 	       android:theme="@style/EmacsStyle"
@@ -289,7 +289,7 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
 	      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|locale|fontScale"/>
 
     <activity android:autoRemoveFromRecents="true"
-              android:label="Emacs options"
+              android:label="@string/shiroikuma_ui_title"
 	      android:exported="true"
               android:name=".EmacsPreferencesActivity">
       <intent-filter>
@@ -302,11 +302,15 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
          activities in Settings, so display the preferences activity as
          a launcher icon instead.  -->
 
+    <!-- shiroikuma fork: always enabled (upstream: @bool/isBeforeNougat),
+         so the shiroikuma_ui_title launcher entry (the fork's UI page)
+         exists on every Android version.  -->
+
     <activity android:autoRemoveFromRecents="true"
-              android:label="Emacs options"
-	      android:enabled="@bool/isBeforeNougat"
-	      android:exported="@bool/isBeforeNougat"
-	      android:icon="@drawable/emacs_wrench"
+              android:label="@string/shiroikuma_ui_title"
+	      android:enabled="true"
+	      android:exported="true"
+	      android:icon="@mipmap/shiroikuma_ui_icon"
               android:name=".EmacsLauncherPreferencesActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -315,8 +319,16 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
       </intent-filter>
     </activity>
 
+    <!-- shiroikuma fork: the authority must equal FORK_APPLICATION_ID
+         (java/Makefile.in): aapt's rename-manifest-package does not
+         rewrite it, and a provider authority already claimed by the
+         stock org.gnu.emacs would make this package uninstallable
+         beside it (INSTALL_FAILED_CONFLICTING_PROVIDER).  The Java
+         side uses getContext ().getPackageName () for the same
+         value.  -->
+
     <provider android:name="org.gnu.emacs.EmacsDocumentsProvider"
-	      android:authorities="org.gnu.emacs"
+	      android:authorities="shiroikuma.emacs"
 	      android:exported="true"
 	      android:grantUriPermissions="true"
 	      android:permission="android.permission.MANAGE_DOCUMENTS"
@@ -339,7 +351,7 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>. -->
 	     android:enabled="true"
 	     android:exported="false"
 	     android:foregroundServiceType="specialUse"
-	     android:label="GNU Emacs service"/>
+	     android:label="@string/shiroikuma_service_name"/>
   </application>
 </manifest>
 

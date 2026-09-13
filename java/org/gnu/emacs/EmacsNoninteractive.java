@@ -130,7 +130,8 @@ public final class EmacsNoninteractive
 	      = activityThreadClass.getMethod ("getPackageInfo",
 					       String.class,
 					       int.class);
-	    loadedApk = method.invoke (activityThread, "org.gnu.emacs",
+	    loadedApk = method.invoke (activityThread,
+				       EmacsConfig.APPLICATION_ID,
 				       (Context.CONTEXT_INCLUDE_CODE
 					| Context.CONTEXT_IGNORE_SECURITY));
 	  }
@@ -144,7 +145,8 @@ public final class EmacsNoninteractive
 					       String.class,
 					       compatibilityInfoClass,
 					       int.class);
-	    loadedApk = method.invoke (activityThread, "org.gnu.emacs",
+	    loadedApk = method.invoke (activityThread,
+				       EmacsConfig.APPLICATION_ID,
 				       null, (Context.CONTEXT_INCLUDE_CODE
 					      | Context.CONTEXT_IGNORE_SECURITY));
 	  }
@@ -183,7 +185,8 @@ public final class EmacsNoninteractive
 						    String.class,
 						    int.class);
 	    method.setAccessible (true);
-	    context = (Context) method.invoke (context, "org.gnu.emacs",
+	    context = (Context) method.invoke (context,
+					       EmacsConfig.APPLICATION_ID,
 					       0);
 	  }
 

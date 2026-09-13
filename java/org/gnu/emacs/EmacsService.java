@@ -194,13 +194,16 @@ public final class EmacsService extends Service
 		     + " may disable it if you wish;"
 		     + " see (emacs)Android Environment.");
 	channel
-	  = new NotificationChannel ("emacs", "Emacs Background Service",
+	  = new NotificationChannel ("emacs",
+				     getString (R.string
+						.shiroikuma_notification_channel),
 				     NotificationManager.IMPORTANCE_LOW);
 	manager.createNotificationChannel (channel);
 	notification = (new Notification.Builder (this, "emacs")
-			.setContentTitle ("Emacs")
+			.setContentTitle (getString (R.string
+						     .shiroikuma_app_name))
 			.setContentText (infoBlurb)
-			.setSmallIcon (android.R.drawable.sym_def_app_icon)
+			.setSmallIcon (R.drawable.shiroikuma_notification)
 			.build ());
 	manager.notify (1, notification);
 	startForeground (1, notification);
@@ -743,7 +746,7 @@ public final class EmacsService extends Service
 		if (uri.getScheme ().equals ("file")
 		    && uri.getPath () != null)
 		  uri
-		    = DocumentsContract.buildDocumentUri ("org.gnu.emacs",
+		    = DocumentsContract.buildDocumentUri (getPackageName (),
 							  uri.getPath ());
 	      }
 
@@ -2118,7 +2121,7 @@ public final class EmacsService extends Service
 
     intent
       = new Intent (Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-		    Uri.parse ("package:org.gnu.emacs"));
+		    Uri.parse ("package:" + getPackageName ()));
 
     runnable = new Runnable () {
 	@Override

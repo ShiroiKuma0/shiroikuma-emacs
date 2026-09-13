@@ -58,9 +58,9 @@ public final class EmacsApplication extends Application
     try
       {
 	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-	  info = manager.getApplicationInfo ("org.gnu.emacs", 0);
+	  info = manager.getApplicationInfo (getPackageName (), 0);
 	else
-	  info = manager.getApplicationInfo ("org.gnu.emacs",
+	  info = manager.getApplicationInfo (getPackageName (),
 					     ApplicationInfoFlags.of (0));
 
 	/* Return an empty string upon failure.  */
